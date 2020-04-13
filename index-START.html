@@ -56,13 +56,25 @@
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
       };
-    }
+    }//end debounce function
+    // this is really useful for limiting how many times a function fires, saving processing power
 
     const sliderImages = document.querySelectorAll('.slide-in');
 
     function checkSlide(e) {
-      console.log(e);
-      
+      // console.log(e);
+      sliderImages.forEach(slideImage => {
+        const slideInAt = (window.scrollY + window.innerHeight) - slideImage.height / 2; //slides image in at halfway point in height
+        const imageBottom = slideImage.offsetTop + slideImage.height; //bottom of image 
+        const isHalfShown = slideInAt > slideImage.offsetTop; 
+        const isNotScrolledPast = window.scrollY < imageBottom;
+        if (isHalfShown && isNotScrolledPast) {
+          slideImage.classList.add('active');
+        } else {
+          slideImage.classList.remove('active');
+        }//end IF
+        
+      }); 
     }//end checkSlide function
 
     window.addEventListener('scroll', debounce(checkSlide));
